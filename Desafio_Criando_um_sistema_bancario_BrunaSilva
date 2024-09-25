@@ -1,11 +1,12 @@
-menu = """
-
+def exibir_menu():
+    return """
 [d] Depositar
 [s] Sacar
 [e] Extrato
 [q] Sair
-
 => """
+
+print("Seja bem-vindo(a) ao sistema bancário!")
 
 saldo = 0
 limite = 500
@@ -14,53 +15,70 @@ numero_saques = 0
 LIMITE_SAQUES = 3
 
 while True:
-
-    opcao = input(menu)
+    opcao = input(exibir_menu())
 
     if opcao == "d":
-        valor = float(input("Qual valor deseja sacar💸: "))
+        print("\nOperação: Depositar")
+        valor = input("Qual valor deseja depositar ou digite [v] para voltar ao menu: ")
 
-        if valor > 0:
-            saldo += valor
-            extrato += f"Depósito: R$ {valor:.2f}\n"
-
+        if valor == "v":
+            print("Voltando ao menu principal...\n")
+            continue
         else:
-            print("Infelizmente a operação falhou! O motivo é que o valor informado é inválido💁‍♀️.")
+            valor = float(valor)
+            if valor > 0:
+                saldo += valor
+                extrato += f"Depósito: R$ {valor:.2f}\n"
+                print(f"Depósito de R$ {valor:.2f} realizado com sucesso!")
+            else:
+                print("Operação falhou! O valor informado é inválido💁‍♀️.")
 
     elif opcao == "s":
-        valor = float(input("Informe o valor do saque💸: "))
+        print("\nOperação: Sacar")
+        valor = input("Informe o valor do saque ou digite [v] para voltar ao menu: ")
 
-        excedeu_saldo = valor > saldo
-
-        excedeu_limite = valor > limite
-
-        excedeu_saques = numero_saques >= LIMITE_SAQUES
-
-        if excedeu_saldo:
-            print("Operação falhou! Você não tem saldo suficiente💁‍♀️.")
-
-        elif excedeu_limite:
-            print("Operação falhou! O valor do saque excede o limite💁‍♀️.")
-
-        elif excedeu_saques:
-            print("Desculpe a operação falhou! Número máximo de saques excedido😒.")
-
-        elif valor > 0:
-            saldo -= valor
-            extrato += f"Saque: R$ {valor:.2f}\n"
-            numero_saques += 1
-
+        if valor == "v":
+            print("Voltando ao menu principal...\n")
+            continue
         else:
-            print("Operação falhou! O valor informado é inválido😒.")
+            valor = float(valor)
+            excedeu_saldo = valor > saldo
+            excedeu_limite = valor > limite
+            excedeu_saques = numero_saques >= LIMITE_SAQUES
 
-    elif opcao == "e💻":
-        print("\n================ EXTRATO ================")
-        print("Não foram realizadas movimentações." if not extrato else extrato)
-        print(f"\nSaldo: R$ {saldo:.2f}")
-        print("==========================================")
+            if excedeu_saldo:
+                print("Operação falhou! Você não tem saldo suficiente💁‍♀️.")
+            elif excedeu_limite:
+                print("Operação falhou! O valor do saque excede o limite💁‍♀️.")
+            elif excedeu_saques:
+                print("Desculpe, a operação falhou! Número máximo de saques excedido😒.")
+            elif valor > 0:
+                saldo -= valor
+                extrato += f"Saque: R$ {valor:.2f}\n"
+                numero_saques += 1
+                print(f"Saque de R$ {valor:.2f} realizado com sucesso!")
+            else:
+                print("Operação falhou! O valor informado é inválido😒.")
+
+    elif opcao == "e":
+        print("\nVocê deseja ver o extrato?")
+        visualizar_extrato = input("Digite 's' para ver o extrato ou 'n' para voltar ao menu principal: ").lower()
+
+        if visualizar_extrato == "s":
+            print("\n================ EXTRATO ================")
+            print("Não foram realizadas movimentações." if not extrato else extrato)
+            print(f"\nSaldo: R$ {saldo:.2f}")
+            print("==========================================")
+        elif visualizar_extrato == "n":
+            print("Voltando ao menu principal...\n")
+            continue
+        else:
+            print("Opção inválida, voltando ao menu principal...\n")
+            continue
 
     elif opcao == "q":
+        print("Obrigado por usar nosso sistema! Até a próxima!")
         break
-
+    
     else:
-        print("Operação inválida, por favor selecione novamente a operação desejada💁‍♀️.")
+        print("Operação inválida, por favor selecione uma operação válida💁‍♀️.")
